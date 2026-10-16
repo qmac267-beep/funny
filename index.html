@@ -1,355 +1,766 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chạm Đến Ngàn Sao - Gửi 20/10 Rực Rỡ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sự Thức Giấc Của Tiny - Chúc Mừng Ngày 20/10</title>
     
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
     <style>
+        :root {
+            --color-pink-glow: #ff758c;
+            --color-rose-glow: #ff7eb3;
+            --color-gold-glow: #ffd166;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #030014;
+            background: radial-gradient(circle at center, #1a0826 0%, #0c0414 60%, #050212 100%);
+            color: #ffffff;
             font-family: 'Montserrat', sans-serif;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            user-select: none;
         }
 
-        /* Nền vũ trụ & hạt tương tác */
-        #universeCanvas {
+        /* Ambient Nebula Layer */
+        .nebula {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 117, 140, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 209, 102, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(186, 104, 200, 0.15) 0%, transparent 65%);
+            filter: blur(40px);
             pointer-events: none;
+            z-index: 1;
+            animation: nebulaPulse 12s ease-in-out infinite alternate;
         }
 
-        /* Khung kính mờ Glassmorphism cực sang */
-        .peak-card {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 480px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 28px;
-            padding: 35px 25px;
-            text-align: center;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
-            animation: cardEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        @keyframes nebulaPulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
         }
 
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(20, 10, 32, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 182, 193, 0.22);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.7),
+                inset 0 0 20px rgba(255, 117, 140, 0.1),
+                0 0 35px rgba(255, 126, 179, 0.2);
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
         }
 
-        .tag {
+        .glass-card:hover {
+            border-color: rgba(255, 209, 102, 0.4);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.8),
+                inset 0 0 25px rgba(255, 117, 140, 0.2),
+                0 0 45px rgba(255, 209, 102, 0.3);
+        }
+
+        /* Typography */
+        .font-dancing { font-family: 'Dancing Script', cursive; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+
+        /* Sound Wave Animation */
+        .sound-wave span {
             display: inline-block;
-            padding: 6px 16px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+            width: 3px;
+            height: 12px;
+            background-color: #ff7eb3;
+            border-radius: 3px;
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        .sound-wave span:nth-child(2) { animation-delay: 0.2s; }
+        .sound-wave span:nth-child(3) { animation-delay: 0.4s; }
+        .sound-wave span:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes wave {
+            0%, 100% { height: 6px; }
+            50% { height: 18px; }
         }
 
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #fff 30%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        p.sub-desc {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 25px;
-        }
-
-        /* Hộp quà 3D tinh tế */
-        .gift-wrapper {
+        /* Tiny Spirit Animation */
+        .tiny-spirit-container {
             position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 20px auto;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
             cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 25px rgba(255, 126, 179, 0.8));
         }
 
-        .gift-wrapper:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .gift-box-icon {
-            font-size: 5.5rem;
-            background: linear-gradient(135deg, #f43f5e, #fb7185);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.6));
-            animation: floatingBox 3s ease-in-out infinite;
-        }
-
-        @keyframes floatingBox {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .tap-instruction {
-            font-size: 0.85rem;
-            color: #38bdf8;
-            font-weight: 500;
-            animation: pulseHint 2s infinite;
-        }
-
-        @keyframes pulseHint {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* Khung thông điệp kiểu gõ chữ */
-        .message-panel {
-            display: none;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(244, 63, 94, 0.3);
-            border-radius: 18px;
-            padding: 20px;
-            margin-top: 15px;
-            text-align: left;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-            animation: fadeInMsg 0.8s ease forwards;
-        }
-
-        @keyframes fadeInMsg {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message-content {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #f1f5f9;
-            min-height: 90px;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        /* Nút âm thanh */
-        .music-toggle {
+        .tiny-aura {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            width: 42px;
-            height: 42px;
+            inset: -10px;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: radial-gradient(circle, rgba(255,126,179,0.4) 0%, rgba(255,209,102,0.1) 60%, transparent 80%);
+            animation: auraPulse 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes auraPulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            100% { transform: scale(1.25); opacity: 1; }
+        }
+
+        .tiny-body {
+            animation: floatTiny 3.5s ease-in-out infinite;
+        }
+
+        @keyframes floatTiny {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        .tiny-eye {
+            animation: blinkEye 4s infinite;
+            transform-origin: center;
+        }
+
+        @keyframes blinkEye {
+            0%, 94%, 98%, 100% { transform: scaleY(1); }
+            96% { transform: scaleY(0.1); }
+        }
+
+        /* Glowing Ribbon Box */
+        .gift-box-3d {
+            perspective: 800px;
             cursor: pointer;
+        }
+        
+        .gift-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gift-container:hover {
+            transform: scale(1.1) rotateY(10deg);
+        }
+
+        /* Toast Popup */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
-            transition: all 0.3s;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
         }
 
-        .music-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.08);
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
         }
 
-        .footer-credit {
-            margin-top: 25px;
-            font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px;
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 126, 179, 0.3);
+            border-radius: 10px;
         }
     </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen">
 
-    <!-- Nút phát nhạc -->
-    <div class="music-toggle" id="audioToggleBtn" onclick="toggleAudio()" title="Bật/Tắt nhạc nền">
-        <i class="fa-solid fa-music"></i>
+    <!-- Canvas Background for Cosmic Stars & Petals -->
+    <canvas id="cosmicCanvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+    <!-- Ambient Nebula Layer -->
+    <div class="nebula"></div>
+
+    <!-- Audio Player Controls Widget -->
+    <div class="fixed top-5 right-5 z-50 flex items-center gap-3">
+        <button id="musicBtn" onclick="toggleMusic()" class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md text-xs font-medium text-pink-200 transition shadow-lg cursor-pointer">
+            <i id="musicIcon" class="fa-solid fa-music text-pink-400"></i>
+            <span id="musicText">Bật Nhạc Nền</span>
+            <div id="soundWave" class="sound-wave hidden flex items-center gap-0.5 ml-1">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </button>
     </div>
 
-    <!-- Canvas Nền Vũ Trụ & Sao Lấp Lánh -->
-    <canvas id="universeCanvas"></canvas>
+    <!-- Main Container Card -->
+    <main id="mainCard" class="glass-card relative z-10 w-[92%] max-w-[500px] rounded-3xl p-6 sm:p-8 text-center my-6">
+        
+        <!-- SCENE 1: Awaken Tiny -->
+        <section id="scene1" class="transition-all duration-700">
+            <div class="tiny-spirit-container" onclick="awakenTiny()">
+                <div class="tiny-aura"></div>
+                <div class="tiny-body">
+                    <svg viewBox="0 0 120 120" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="tinyGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#ffffff" />
+                                <stop offset="50%" stop-color="#ffb6c1" />
+                                <stop offset="100%" stop-color="#ff758c" />
+                            </radialGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <path d="M 25,60 C 5,40 5,80 35,65" fill="rgba(255,182,193,0.5)" filter="url(#glow)"/>
+                        <path d="M 95,60 C 115,40 115,80 85,65" fill="rgba(255,182,193,0.5)" filter="url(#glow)"/>
+                        <circle cx="60" cy="60" r="32" fill="url(#tinyGradient)" filter="url(#glow)"/>
+                        <ellipse cx="46" cy="65" rx="5" ry="3" fill="#ff4d6d" opacity="0.6"/>
+                        <ellipse cx="74" cy="65" rx="5" ry="3" fill="#ff4d6d" opacity="0.6"/>
+                        <g id="sleepingEyes">
+                            <path d="M 44,56 Q 50,62 54,56" fill="none" stroke="#2b0938" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M 66,56 Q 70,62 76,56" fill="none" stroke="#2b0938" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                        <g id="awakeEyes" style="display: none;">
+                            <circle class="tiny-eye" cx="48" cy="54" r="4" fill="#1f0322"/>
+                            <circle class="tiny-eye" cx="72" cy="54" r="4" fill="#1f0322"/>
+                            <circle cx="50" cy="52" r="1.5" fill="#ffffff"/>
+                            <circle cx="74" cy="52" r="1.5" fill="#ffffff"/>
+                        </g>
+                        <path d="M 54,67 Q 60,73 66,67" fill="none" stroke="#2b0938" stroke-width="2.5" stroke-linecap="round"/>
+                        <polygon points="60,18 63,26 71,27 65,33 67,41 60,37 53,41 55,33 49,27 57,26" fill="#ffd166" filter="url(#glow)"/>
+                    </svg>
+                </div>
+            </div>
 
-    <!-- Thẻ giao diện chính -->
-    <div class="peak-card">
-        <span class="tag">20.10 Thanh Xuân</span>
-        <h1>Chào Ngày 20/10</h1>
-        <p class="sub-desc">Gửi những lời chúc tuyệt vời nhất đến một nửa thế giới</p>
+            <div class="mt-6">
+                <span class="inline-block px-3 py-1 text-[11px] font-semibold tracking-widest uppercase rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30 mb-3">
+                    20 / 10 • Thanh Xuân Lớp 9
+                </span>
+                <h1 id="titleText" class="font-dancing text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-300 to-amber-200 drop-shadow-[0_0_15px_rgba(255,117,140,0.4)]">
+                    Sự Thức Giấc Của Tiny
+                </h1>
+                <p id="subText" class="text-xs sm:text-sm text-pink-200/80 mt-3 font-light leading-relaxed max-w-xs mx-auto">
+                    Bầu trời đêm rực rỡ đang đợi bạn. Chạm nhẹ vào sinh linh ánh sáng <b class="text-pink-300 font-medium">Tiny</b> để đánh thức phép thuật...
+                </p>
+            </div>
 
-        <!-- Hộp quà -->
-        <div class="gift-wrapper" onclick="openSurprise()">
-            <div class="gift-box-icon" id="giftIcon">
-                <i class="fa-solid fa-gift"></i>
+            <button onclick="awakenTiny()" class="mt-8 px-7 py-3 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-semibold text-sm shadow-[0_0_25px_rgba(255,117,140,0.5)] hover:shadow-[0_0_35px_rgba(255,117,140,0.8)] transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Chạm Để Đánh Thức
+            </button>
+        </section>
+
+        <!-- SCENE 2: Gift Box Reveal -->
+        <section id="scene2" class="hidden opacity-0 transition-all duration-700">
+            <div class="gift-box-3d my-4" onclick="openGift()">
+                <div class="gift-container">
+                    <svg viewBox="0 0 100 100" class="w-full h-full filter drop-shadow-[0_10px_20px_rgba(255,117,140,0.5)]">
+                        <rect x="20" y="40" width="60" height="50" rx="6" fill="url(#giftBodyGrad)"/>
+                        <rect id="giftLid" x="15" y="28" width="70" height="16" rx="4" fill="url(#giftLidGrad)"/>
+                        <rect x="44" y="28" width="12" height="62" fill="#ffd166"/>
+                        <path d="M 50,28 C 35,10 20,30 45,28 Z" fill="#ffd166"/>
+                        <path d="M 50,28 C 65,10 80,30 55,28 Z" fill="#ffd166"/>
+                        <circle cx="50" cy="28" r="4" fill="#fff"/>
+                        <defs>
+                            <linearGradient id="giftBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff758c"/>
+                                <stop offset="100%" stop-color="#b5179e"/>
+                            </linearGradient>
+                            <linearGradient id="giftLidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff8fa3"/>
+                                <stop offset="100%" stop-color="#c77dff"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <h2 class="font-playfair text-2xl font-bold text-amber-200 mt-2">
+                Hộp Quà Thanh Xuân
+            </h2>
+            <p class="text-xs sm:text-sm text-pink-100/80 mt-2 font-light leading-relaxed max-w-xs mx-auto">
+                Tiny đã chuẩn bị một hộp quà đặc biệt dành tặng các bạn nữ lớp mình nhân dịp 20/10.
+            </p>
+
+            <button onclick="openGift()" class="mt-6 px-7 py-3 rounded-full bg-gradient-to-r from-rose-500 to-amber-400 text-white font-semibold text-sm shadow-[0_0_25px_rgba(255,126,179,0.5)] hover:shadow-[0_0_35px_rgba(255,126,179,0.8)] transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                <i class="fa-solid fa-box-open mr-2"></i> Mở Hộp Quà Phép Thuật
+            </button>
+        </section>
+
+        <!-- SCENE 3: Wishes & Typewriter -->
+        <section id="scene3" class="hidden opacity-0 transition-all duration-700">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <span class="text-pink-400 text-sm"><i class="fa-solid fa-heart"></i></span>
+                <span class="text-xs uppercase font-semibold tracking-widest text-amber-200">Gửi Các Bạn Nữ Lớp Mình</span>
+                <span class="text-pink-400 text-sm"><i class="fa-solid fa-heart"></i></span>
+            </div>
+
+            <h2 class="font-dancing text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200 mb-4">
+                Lời Chúc 20/10
+            </h2>
+
+            <div class="bg-black/40 border border-pink-500/20 rounded-2xl p-4 sm:p-5 text-left mb-5 shadow-inner backdrop-blur-md">
+                <p id="typewriterText" class="font-playfair italic text-sm sm:text-base leading-relaxed text-pink-50 min-h-[110px]"></p>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-xs text-pink-200/70 mb-2.5 font-medium flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-sparkles text-amber-300"></i> Chọn chủ đề lời chúc:
+                </p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <button onclick="changeWish(0)" class="wish-chip px-3 py-1.5 rounded-xl bg-white/5 hover:bg-pink-500/20 border border-pink-500/20 text-xs text-pink-200 transition">✨ Xinh Đẹp & Rạng Rỡ</button>
+                    <button onclick="changeWish(1)" class="wish-chip px-3 py-1.5 rounded-xl bg-white/5 hover:bg-pink-500/20 border border-pink-500/20 text-xs text-pink-200 transition">📚 Điểm 9, Điểm 10</button>
+                    <button onclick="changeWish(2)" class="wish-chip px-3 py-1.5 rounded-xl bg-white/5 hover:bg-pink-500/20 border border-pink-500/20 text-xs text-pink-200 transition">💖 Vui Vẻ Mỗi Ngày</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="openCustomWishModal()" class="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium text-pink-100 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-pen-to-square text-amber-300"></i> Viết Lời Chúc
+                </button>
+                <button onclick="triggerConfettiBurst()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-wand-magic"></i> Pháo Hoa
+                </button>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-pink-200/60">
+                <button onclick="copyShareLink()" class="hover:text-amber-300 transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-share-nodes"></i> Sao chép liên kết
+                </button>
+                <button onclick="restartJourney()" class="hover:text-amber-300 transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-rotate-right"></i> Xem lại từ đầu
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Write Custom Wish -->
+    <div id="customWishModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 text-left border border-pink-500/30 shadow-2xl transform scale-95 transition-transform duration-300" id="modalContainer">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-playfair text-xl font-bold text-amber-200 flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-pink-400"></i> Tự Sáng Tác Lời Chúc
+                </h3>
+                <button onclick="closeCustomWishModal()" class="text-pink-200/60 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs text-pink-200/70 mb-4">
+                Nhập lời chúc độc quyền của bạn dành cho các bạn nữ lớp mình:
+            </p>
+
+            <textarea id="customWishInput" rows="4" class="w-full bg-black/40 border border-pink-500/30 rounded-2xl p-3.5 text-sm text-pink-50 placeholder-pink-300/40 focus:outline-none focus:border-amber-300 transition mb-4 resize-none" placeholder="Nhập lời chúc của bạn ở đây..."></textarea>
+
+            <div class="flex justify-end gap-2">
+                <button onclick="closeCustomWishModal()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-pink-200 font-medium transition">Hủy</button>
+                <button onclick="saveCustomWish()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs text-white font-semibold shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition">Lưu & Gửi</button>
             </div>
         </div>
-        <div class="tap-instruction" id="tapInstruction">✨ Chạm để mở món quà đặc biệt ✨</div>
-
-        <!-- Khung lời chúc -->
-        <div class="message-panel" id="messagePanel">
-            <div class="message-content" id="typewriterOutput"></div>
-        </div>
-
-        <div class="footer-credit">
-            MADE WITH VIBE & CODE • LỚP 9 EDITION
-        </div>
     </div>
 
-    <!-- Nhạc nền du dương -->
-    <audio id="bgMusic" loop src="https://assets.mixkit.co/music/preview/mixkit-a-very-happy-christmas-897.mp3"></audio>
+    <!-- Toast Notification Popup -->
+    <div id="toast" class="toast flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-amber-300"></i>
+        <span id="toastMsg">Đã sao chép liên kết chúc mừng!</span>
+    </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Nội dung chuẩn vibe học sinh lớp 9: vừa đẹp, vừa chất, không sến
-        const customMessage = "Chúc các bạn nữ (và một nửa tuyệt vời của thế giới) luôn giữ được nụ cười rạng rỡ, luôn tự tin, tỏa sáng rực rỡ như những vì sao. Chúc việc học hành luôn thuận lợi, kiểm tra toàn điểm 9 điểm 10, gặt hái thật nhiều thành công và có một ngày 20/10 thật trọn vẹn, đáng nhớ nhé! 🚀✨";
-
-        let isOpened = false;
-
-        function openSurprise() {
-            if (isOpened) return;
-            isOpened = true;
-
-            document.getElementById('giftIcon').innerHTML = '<i class="fa-solid fa-box-open"></i>';
-            document.getElementById('tapInstruction').style.display = 'none';
-            document.getElementById('messagePanel').style.display = 'block';
-
-            runTypewriter(customMessage);
-            createFireworkBurst();
-
-            const music = document.getElementById('bgMusic');
-            if (music.paused) {
-                music.play().catch(() => {});
-            }
-        }
-
-        // Hiệu ứng gõ chữ
-        function runTypewriter(text) {
-            const target = document.getElementById('typewriterOutput');
-            target.innerHTML = '';
-            let idx = 0;
-
-            function typing() {
-                if (idx < text.length) {
-                    target.innerHTML += text.charAt(idx);
-                    idx++;
-                    setTimeout(typing, 25);
-                }
-            }
-            typing();
-        }
-
-        // Điều khiển nhạc
-        function toggleAudio() {
-            const music = document.getElementById('bgMusic');
-            const btn = document.getElementById('audioToggleBtn');
-            if (music.paused) {
-                music.play();
-                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-            } else {
-                music.pause();
-                btn.innerHTML = '<i class="fa-solid fa-music"></i>';
-            }
-        }
-
-        // --- CANVAS NỀN VŨ TRỤ & PHÁO HOA ---
-        const canvas = document.getElementById('universeCanvas');
+        const canvas = document.getElementById('cosmicCanvas');
         const ctx = canvas.getContext('2d');
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        let width, height;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
-        resize();
-        window.addEventListener('resize', resize);
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        const stars = [];
-        for (let i = 0; i < 70; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 1.8 + 0.5,
-                alpha: Math.random(),
-                speed: Math.random() * 0.02 + 0.005
-            });
-        }
+        window.addEventListener('mousemove', (e) => {
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+        });
 
-        const particles = [];
-        const symbols = ['✨', '⭐', '🌸', '💖'];
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                mouse.targetX = e.touches[0].clientX;
+                mouse.targetY = e.touches[0].clientY;
+            }
+        });
 
-        function createFireworkBurst() {
-            for (let i = 0; i < 35; i++) {
-                particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 8,
-                    vy: (Math.random() - 0.5) * 8,
-                    char: symbols[Math.floor(Math.random() * symbols.length)],
-                    alpha: 1,
-                    decay: Math.random() * 0.02 + 0.015,
-                    size: Math.random() * 12 + 10
-                });
+        class CosmicParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.2 + 0.5;
+                this.baseAlpha = Math.random() * 0.7 + 0.2;
+                this.alpha = this.baseAlpha;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4 - 0.2;
+                this.color = ['#ffffff', '#ffb6c1', '#ffd166', '#e0aaff'][Math.floor(Math.random() * 4)];
+                this.isPetal = Math.random() < 0.25;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.02;
+            }
+
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    let force = (120 - dist) / 120;
+                    this.x -= (dx / dist) * force * 1.5;
+                    this.y -= (dy / dist) * force * 1.5;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.rotation += this.rotSpeed;
+
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                    this.y = height + 10;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.alpha;
+
+                if (this.isPetal) {
+                    ctx.fillStyle = '#ff758c';
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(-6, -8, -10, 4, 0, 10);
+                    ctx.bezierCurveTo(10, 4, 6, -8, 0, 0);
+                    ctx.fill();
+                } else {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Vẽ sao lấp lánh nền
-            stars.forEach(star => {
-                star.alpha += star.speed;
-                if (star.alpha > 1 || star.alpha < 0.2) star.speed = -star.speed;
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            // Vẽ pháo hoa / hạt khi mở quà
-            particles.forEach((p, index) => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.alpha -= p.decay;
-
-                if (p.alpha <= 0) {
-                    particles.splice(index, 1);
-                    return;
-                }
-
-                ctx.save();
-                ctx.globalAlpha = p.alpha;
-                ctx.font = `${p.size}px sans-serif`;
-                ctx.fillText(p.char, p.x, p.y);
-                ctx.restore();
-            });
-
-            requestAnimationFrame(animate);
+        const particleCount = window.innerWidth < 768 ? 65 : 120;
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new CosmicParticle());
         }
-        animate();
+
+        function renderCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            mouse.x += (mouse.targetX - mouse.x) * 0.1;
+            mouse.y += (mouse.targetY - mouse.y) * 0.1;
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(renderCanvas);
+        }
+        renderCanvas();
+
+        let audioCtx = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSynthesizedSound(type) {
+            initAudioContext();
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            if (type === 'chime') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1760, now + 0.6);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.8);
+            } else if (type === 'pop') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            }
+        }
+
+        let bgAudio = new Audio('https://assets.mixkit.co/music/preview/mixkit-a-very-happy-christmas-897.mp3');
+        bgAudio.loop = true;
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            const musicIcon = document.getElementById('musicIcon');
+            const musicText = document.getElementById('musicText');
+            const soundWave = document.getElementById('soundWave');
+
+            if (!isMusicPlaying) {
+                bgAudio.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.className = "fa-solid fa-pause text-amber-300";
+                    musicText.innerText = "Tắt Nhạc";
+                    soundWave.classList.remove('hidden');
+                }).catch(err => console.log("Playback prevented:", err));
+            } else {
+                bgAudio.pause();
+                isMusicPlaying = false;
+                musicIcon.className = "fa-solid fa-music text-pink-400";
+                musicText.innerText = "Bật Nhạc Nền";
+                soundWave.classList.add('hidden');
+            }
+        }
+
+        let currentScene = 1;
+
+        function awakenTiny() {
+            if (currentScene !== 1) return;
+            currentScene = 2;
+            playSynthesizedSound('chime');
+
+            document.getElementById('sleepingEyes').style.display = 'none';
+            document.getElementById('awakeEyes').style.display = 'block';
+
+            const scene1 = document.getElementById('scene1');
+            const scene2 = document.getElementById('scene2');
+
+            scene1.classList.add('opacity-0');
+            setTimeout(() => {
+                scene1.classList.add('hidden');
+                scene2.classList.remove('hidden');
+                setTimeout(() => {
+                    scene2.classList.remove('opacity-0');
+                }, 50);
+            }, 600);
+
+            if (!isMusicPlaying) {
+                toggleMusic();
+            }
+        }
+
+        function openGift() {
+            if (currentScene !== 2) return;
+            currentScene = 3;
+            playSynthesizedSound('chime');
+            triggerConfettiBurst();
+
+            const scene2 = document.getElementById('scene2');
+            const scene3 = document.getElementById('scene3');
+
+            scene2.classList.add('opacity-0');
+            setTimeout(() => {
+                scene2.classList.add('hidden');
+                scene3.classList.remove('hidden');
+                setTimeout(() => {
+                    scene3.classList.remove('opacity-0');
+                    startTypewriter(wishes[0]);
+                }, 50);
+            }, 600);
+        }
+
+        function restartJourney() {
+            currentScene = 1;
+            document.getElementById('sleepingEyes').style.display = 'block';
+            document.getElementById('awakeEyes').style.display = 'none';
+
+            const scene1 = document.getElementById('scene1');
+            const scene3 = document.getElementById('scene3');
+
+            scene3.classList.add('opacity-0');
+            setTimeout(() => {
+                scene3.classList.add('hidden');
+                scene1.classList.remove('hidden');
+                setTimeout(() => {
+                    scene1.classList.remove('opacity-0');
+                }, 50);
+            }, 600);
+        }
+
+        const wishes = [
+            "Mong chm đừng lm phiền tôi farm bá khí",
+            "kid",
+            "bọn kid đừng lm phiền anh"
+        ];
+
+        let typingTimeout = null;
+
+        function startTypewriter(text) {
+            const el = document.getElementById('typewriterText');
+            el.innerHTML = "";
+            let index = 0;
+
+            if (typingTimeout) clearTimeout(typingTimeout);
+
+            function type() {
+                if (index < text.length) {
+                    el.innerHTML += text.charAt(index);
+                    index++;
+                    typingTimeout = setTimeout(type, 30);
+                }
+            }
+            type();
+        }
+
+        function changeWish(index) {
+            playSynthesizedSound('pop');
+            startTypewriter(wishes[index]);
+        }
+
+        function triggerConfettiBurst() {
+            playSynthesizedSound('pop');
+            confetti({
+                particleCount: 80,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#ff758c', '#ff7eb3', '#ffd166', '#ffffff']
+            });
+            setTimeout(() => {
+                confetti({
+                    particleCount: 40,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff758c', '#ffd166']
+                });
+                confetti({
+                    particleCount: 40,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff7eb3', '#ffffff']
+                });
+            }, 250);
+        }
+
+        function openCustomWishModal() {
+            playSynthesizedSound('pop');
+            const modal = document.getElementById('customWishModal');
+            const container = document.getElementById('modalContainer');
+            modal.classList.remove('pointer-events-none');
+            modal.classList.add('opacity-100');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+        }
+
+        function closeCustomWishModal() {
+            const modal = document.getElementById('customWishModal');
+            const container = document.getElementById('modalContainer');
+            modal.classList.add('pointer-events-none');
+            modal.classList.remove('opacity-100');
+            container.classList.add('scale-95');
+            container.classList.remove('scale-100');
+        }
+
+        function saveCustomWish() {
+            const input = document.getElementById('customWishInput').value.trim();
+            if (input.length > 0) {
+                startTypewriter(input + " 💖");
+                showToast("Đã cập nhật lời chúc của bạn!");
+                closeCustomWishModal();
+                triggerConfettiBurst();
+            } else {
+                showToast("Vui lòng nhập nội dung lời chúc nhé!");
+            }
+        }
+
+        function copyShareLink() {
+            playSynthesizedSound('pop');
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast("Đã sao chép liên kết chúc mừng 20/10!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        const card = document.getElementById('mainCard');
+        window.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const tiltX = (y / (rect.height / 2)) * -6;
+            const tiltY = (x / (rect.width / 2)) * 6;
+            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
     </script>
 </body>
 </html>
